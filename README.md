@@ -8,6 +8,9 @@ A simple line editor.
 - p: print lines around the current line
 - P: print entire lines
 - q: quit
+- number: set current line number
 - i: insert one line after the current line
 - s: substitute the current line
+- a: insert multiple lines (end with ".")
+- u: undo
 - d: delete line

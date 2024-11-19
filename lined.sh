@@ -1,4 +1,6 @@
 #!/bin/sh
+TMPFILE="__tmp__.txt"
+TMPFILE2="__tmp2__.txt"
 file="$1"
 if [ "$file" = "" ]; then
   file="edited.txt"
@@ -34,38 +36,68 @@ while [ true ]; do
        nl $file | tail -n +$lnum | head -1
        echo "Input new line"
        read ln
-       cp $file tmp.txt
+       cp $file $TMPFILE
        if [ $lnum = 1 ]; then
-          (echo $ln; tail -n +2 $file) > tmp2.txt
+          (echo $ln; tail -n +2 $file) > $TMPFILE2
        else
           lnum1=`expr $lnum - 1`
           lnum2=`expr $lnum + 1`
-          (head -n $lnum1 $file; echo $ln; tail -n +$lnum2 $file) > tmp2.txt
+          (head -n $lnum1 $file; echo $ln; tail -n +$lnum2 $file) > $TMPFILE2
        fi
-       mv tmp2.txt $file
+       mv $TMPFILE2 $file
        ;;
     i)
-     echo "Input new line"
+       echo "Input new line"
        read ln
-       cp $file tmp.txt
+       cp $file $TMPFILE
        if [ $lnum = 1 ]; then
-          (echo $ln; tail -n +2 $file) > tmp2.txt
+          (echo $ln; tail -n +2 $file) > $TMPFILE2
        else
           lnum2=`expr $lnum + 1`
-          (head -n $lnum $file; echo $ln; tail -n +$lnum2 $file) > tmp2.txt
+          (head -n $lnum $file; echo $ln; tail -n +$lnum2 $file) > $TMPFILE2
        fi
-       mv tmp2.txt $file
+       mv $TMPFILE2 $file
        ;;
     d)
-       cp $file tmp.txt
+       cp $file $TMPFILE
        if [ $lnum = 1 ]; then
-          (tail -n +2 $file) > tmp2.txt
+          (tail -n +2 $file) > $TMPFILE2
        else
           lnum1=`expr $lnum - 1`
           lnum2=`expr $lnum + 1`
-          (head -n $lnum1 $file; tail -n +$lnum2 $file) > tmp2.txt
+          (head -n $lnum1 $file; tail -n +$lnum2 $file) > $TMPFILE2
        fi
-       mv tmp2.txt $file
+       mv $TMPFILE2 $file
+       ;;
+    a)
+       cp $file $TMPFILE
+       echo "Input new lines (end with .)"
+       lines=""
+       while [ true ]; do
+	 read ln
+	 if [ "$ln" = "." ]; then
+	   break
+	 fi
+	 if [ "$lines" = "" ]; then
+           lines=$ln
+	 else
+	   lines="$lines\n$ln"
+	 fi
+       done
+       if [ $lnum = 1 ]; then
+          (echo -e $lines; tail -n +2 $file) > $TMPFILE2
+       else
+          lnum2=`expr $lnum + 1`
+          (head -n $lnum $file; echo -e $lines; tail -n +$lnum2 $file) > $TMPFILE2
+       fi
+       mv $TMPFILE2 $file
+       ;;
+    u)
+       if [ -f $TMPFILE ]; then
+	  mv $TMPFILE $file
+       else
+	  echo "Not undoable"
+       fi
        ;;
     h)
        echo "p: print file"
