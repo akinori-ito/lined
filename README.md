@@ -10,3 +10,4 @@ A simple line editor.
 - q: quit
 - i: insert one line after the current line
 - s: substitute the current line
+- d: delete line
