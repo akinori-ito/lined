@@ -56,6 +56,17 @@ while [ true ]; do
        fi
        mv tmp2.txt $file
        ;;
+    d)
+       cp $file tmp.txt
+       if [ $lnum = 1 ]; then
+          (tail -n +2 $file) > tmp2.txt
+       else
+          lnum1=`expr $lnum - 1`
+          lnum2=`expr $lnum + 1`
+          (head -n $lnum1 $file; tail -n +$lnum2 $file) > tmp2.txt
+       fi
+       mv tmp2.txt $file
+       ;;
     h)
        echo "p: print file"
        echo "P: print entire file"
