@@ -104,6 +104,8 @@ while [ true ]; do
        echo "P: print entire file"
        echo "s: substitute line"
        echo "i: insert line"
+       echo "a: insert multiple lines (end with ".")"
+       echo "u: undo"
        echo "h: help"
        echo "number: goto line"
        echo "q: quit"
