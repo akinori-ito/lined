@@ -1,6 +1,6 @@
 # LinED
 
-A simple line editor.
+A simple line editor that uses only standard UNIX tools (sh, head, tail, cat, nl, cp, mv)
 
 # List of commands:
 
@@ -11,6 +11,6 @@ A simple line editor.
 - number: set current line number
 - i: insert one line after the current line
 - s: substitute the current line
-- a: insert multiple lines (end with ".")
+- a: insert multiple lines after the current line (end with ".")
 - u: undo
-- d: delete line
+- d: delete the current line

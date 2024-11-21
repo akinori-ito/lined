@@ -72,24 +72,19 @@ while [ true ]; do
     a)
        cp $file $TMPFILE
        echo "Input new lines (end with .)"
-       lines=""
+       if [ $lnum = 0 ]; then
+	  cp /dev/null $TMPFILE2
+       else
+          head -n $lnum $file > $TMPFILE2
+       fi
        while [ true ]; do
 	 read ln
 	 if [ "$ln" = "." ]; then
 	   break
 	 fi
-	 if [ "$lines" = "" ]; then
-           lines=$ln
-	 else
-	   lines="$lines\n$ln"
-	 fi
+	 echo $ln >> $TMPFILE2
        done
-       if [ $lnum = 1 ]; then
-          (echo -e $lines; tail -n +2 $file) > $TMPFILE2
-       else
-          lnum2=`expr $lnum + 1`
-          (head -n $lnum $file; echo -e $lines; tail -n +$lnum2 $file) > $TMPFILE2
-       fi
+       tail -n +$lnum2 $file >> $TMPFILE2
        mv $TMPFILE2 $file
        ;;
     u)
@@ -103,8 +98,8 @@ while [ true ]; do
        echo "p: print file"
        echo "P: print entire file"
        echo "s: substitute line"
-       echo "i: insert line"
-       echo "a: insert multiple lines (end with ".")"
+       echo "i: insert line after the current line"
+       echo "a: insert multiple lines after the current line (end with ".")"
        echo "u: undo"
        echo "h: help"
        echo "number: goto line"
