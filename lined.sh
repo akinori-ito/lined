@@ -84,6 +84,7 @@ while [ true ]; do
 	 fi
 	 echo $ln >> $TMPFILE2
        done
+       lnum2=`expr $lnum + 1`
        tail -n +$lnum2 $file >> $TMPFILE2
        mv $TMPFILE2 $file
        ;;
